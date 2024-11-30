@@ -5,6 +5,7 @@ import com.example.retailproductexample.model.Product;
 import com.example.retailproductexample.service.FuzzySearchService;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +24,13 @@ public class ProductController {
     this.fuzzySearchService = fuzzySearchService;
   }
 
-  @PostMapping
+  @PostMapping("/addProduct")
   public ResponseEntity<String> addProduct(@RequestBody Product product) {
     MockDataStore.products.put(product.getId(), product);
     return ResponseEntity.ok("Product added successfully");
   }
 
-  @GetMapping
+  @GetMapping("/allProducts")
   public ResponseEntity<List<Product>> getAllProducts() {
     return ResponseEntity.ok(MockDataStore.products.values().stream().toList());
   }
@@ -45,9 +46,17 @@ public class ProductController {
 
   @GetMapping("/search")
   public ResponseEntity<List<Product>> searchProducts(@RequestParam String query) {
+    if (query == null || query.isBlank()) {
+      return ResponseEntity.badRequest().build();
+    }
     List<Product> results = MockDataStore.products.values().stream()
         .filter(product -> fuzzySearchService.isFuzzyMatch(query, product.getName()))
         .collect(Collectors.toList());
+    if (results.isEmpty()) {
+      //log.info("No products found for query: {}", query);
+    } else {
+      //log.info("Found {} products for query: {}", results.size(), query);
+    }
     return ResponseEntity.ok(results);
   }
 
