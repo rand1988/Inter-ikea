@@ -4,6 +4,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FuzzySearchService {
+   /*
+    * Calculate the edit distance between two strings using dynamic programming.
+     The edit distance is the minimum number of operations required to transform
+     one string into the other. The allowed operations are insertion, deletion, and
+     substitution of a single character.
+     isFuzzyMatch("kitten", "sitting")
+     Edit distance between "kitten" and "sitting":
+     Substitute 'k' → 's': 1 edit
+     Substitute 'e' → 'i': 2 edits
+     Insert 'g' at the end: 3 edits
+     Total: 3
+     Fuzzy match threshold:
+     Math.max(1, 6 / 3) = 2
+     Result:
+     Edit distance (3) > Threshold (2), so the result is false.
+   */
 
   public boolean isFuzzyMatch(String query, String target) {
     int distance = calculateEditDistance(query.toLowerCase(), target.toLowerCase());

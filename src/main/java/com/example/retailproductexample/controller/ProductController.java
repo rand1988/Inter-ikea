@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -53,9 +54,9 @@ public class ProductController {
         .filter(product -> fuzzySearchService.isFuzzyMatch(query, product.getName()))
         .collect(Collectors.toList());
     if (results.isEmpty()) {
-      //log.info("No products found for query: {}", query);
+      log.info("No products found for query: {}", query);
     } else {
-      //log.info("Found {} products for query: {}", results.size(), query);
+      log.info("Found {} products for query: {}", results.size(), query);
     }
     return ResponseEntity.ok(results);
   }
