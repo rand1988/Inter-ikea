@@ -21,11 +21,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = {FuzzySearchService.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ProductControllerTest {
 
   private ProductController productController;
-
   @Mock
   private FuzzySearchService fuzzySearchService;
 
